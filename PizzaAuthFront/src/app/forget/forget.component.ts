@@ -11,10 +11,12 @@ import { StorageService } from '../_services/storage.service';
 export class ForgetComponent {
   form: any = {
     username: null,
-    password: null
+    password: null,
+    fpassword:null
   };
   isSuccessful = false;
   isSignUpFailed = false;
+  isMissMatched=false;
   errorMessage = '';
 
   constructor(private authService: AuthService) { }
@@ -23,19 +25,27 @@ export class ForgetComponent {
   }
 
   onSubmit(): void {
-    const { username,password } = this.form;
+    const { username,password ,fpassword} = this.form;
+    if(!(fpassword==password)){
+      console.log(fpassword);
+      console.log(password);
+      
+      this.isMissMatched=true;
+    }else{
+      this.authService.forget(username, password).subscribe({
+        next: data => {
+          console.log(data);
+          this.isSuccessful = true;
+          this.isSignUpFailed = false;
+        },
+        error: err => {
+          this.errorMessage = err.error.message;
+          this.isSignUpFailed = true;
+        }
+      });
+    }
 
-    this.authService.forget(username, password).subscribe({
-      next: data => {
-        console.log(data);
-        this.isSuccessful = true;
-        this.isSignUpFailed = false;
-      },
-      error: err => {
-        this.errorMessage = err.error.message;
-        this.isSignUpFailed = true;
-      }
-    });
+    
   }
 
 }
