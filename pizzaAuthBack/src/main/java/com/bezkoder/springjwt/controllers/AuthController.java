@@ -13,9 +13,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -71,6 +73,28 @@ public class AuthController {
                          userDetails.getEmail(), 
                          roles));
   }
+  @PutMapping("signin/forget")
+  public ResponseEntity<?> forget(@Valid @RequestBody LoginRequest request) {
+   try {
+	   User user=userRepository.findByUsername(request.getUsername()).get();
+	   if(user!=null) {
+		   user.setPassword(encoder.encode(request.getPassword()));
+		   userRepository.save(user);
+		   return ResponseEntity.ok(new MessageResponse("Password changed successfully"));
+	   }else {
+		   return ResponseEntity
+	    	          .badRequest()
+	    	          .body(new MessageResponse("Error: User is not Registered!"));
+	   }
+   }catch (Exception e) {
+	   return ResponseEntity
+ 	          .badRequest()
+ 	          .body(new MessageResponse("Error: User is not Registered!"));
+	
+     }
+    
+  }
+
 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
