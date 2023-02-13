@@ -15,6 +15,7 @@ import { BoardUserComponent } from './board-user/board-user.component';
 
 import { httpInterceptorProviders } from './_helpers/http.interceptor';
 import { TAokenIspService } from './taoken-isp.service';
+import { ForgetComponent } from './forget/forget.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { TAokenIspService } from './taoken-isp.service';
     ProfileComponent,
     BoardAdminComponent,
     BoardModeratorComponent,
-    BoardUserComponent
+    BoardUserComponent,
+    ForgetComponent
   ],
   imports: [
     BrowserModule,

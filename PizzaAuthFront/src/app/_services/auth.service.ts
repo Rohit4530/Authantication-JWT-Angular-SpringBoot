@@ -36,4 +36,15 @@ export class AuthService {
       httpOptions
     );
   }
+  forget(username: string, password: string): Observable<any> {
+    return this.http.put(
+      AUTH_API + 'signin/forget',
+      {
+        username,
+        password,
+      },
+      httpOptions
+    );
+  }
+  
 }
